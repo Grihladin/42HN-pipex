@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:08:08 by mratke            #+#    #+#             */
-/*   Updated: 2024/11/24 18:38:38 by mratke           ###   ########.fr       */
+/*   Updated: 2024/11/24 18:39:59 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int argc, char **argv, char **env)
 	path = get_path(env);
 	cmd1 = parse_cmd(path, "ls");
 	cmd2 = parse_cmd(path, "wc -l");
-	file1_fd = open("file1", O_RDONLY | O_CREAT | O_TRUNC, 777);
+	file1_fd = open("file1", O_WRONLY | O_CREAT | O_TRUNC, 777);
 	if (pipe(pipe_fd) == -1)
 	{
 		perror("Pipe creathion error");
@@ -46,7 +46,6 @@ int	main(int argc, char **argv, char **env)
 		dup2(file1_fd, STDOUT_FILENO);
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
-		close(file1_fd);
 		execve(cmd1.command_path, cmd1.command_paramets, env);
 		perror("Command executhion in child 1 failed");
 		exit(EXIT_FAILURE);

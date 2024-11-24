@@ -1,0 +1,12 @@
+Makefile
+cmd_parse_ft.c
+file1
+file2
+ft_printf
+ft_split.c
+get_next_line
+main.c
+obj
+pipex
+pipex.h
+string_tools.c
