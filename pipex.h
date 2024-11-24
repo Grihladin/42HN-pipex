@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:03:23 by mratke            #+#    #+#             */
-/*   Updated: 2024/11/22 23:06:20 by mratke           ###   ########.fr       */
+/*   Updated: 2024/11/24 16:36:20 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@
 
 typedef struct s_command_prop
 {
-	int		infile;
-	int		outfile;
-	char	*command_path;
-	char	**command_paramets;
-}			t_command_prop;
+	int			infile;
+	int			outfile;
+	char		*command_path;
+	char		**command_paramets;
+}				t_command_prop;
 
-char		**ft_split(char const *s, char c);
-char		*ft_strjoin(char const *s1, char const *s2);
-char		*free_and_return_empty(char *s);
+char			**ft_split(char const *s, char c);
+char			*ft_strjoin(char const *s1, char const *s2);
+char			*free_and_return_empty(char *s);
+t_command_prop	parse_cmd(char **path, char *cmd);
+char			**get_path(char **env);

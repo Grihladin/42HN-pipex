@@ -8,7 +8,8 @@ GET_NEXT_LINE_DIR = get_next_line
 GET_NEXT_LINE = $(GET_NEXT_LINE_DIR)/get_next_line.a
 SRC = main.c \
 	ft_split.c \
-	string_tools.c
+	string_tools.c \
+	cmd_parse_ft.c
 
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

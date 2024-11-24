@@ -6,85 +6,62 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:08:08 by mratke            #+#    #+#             */
-/*   Updated: 2024/11/22 23:11:15 by mratke           ###   ########.fr       */
+/*   Updated: 2024/11/24 18:21:20 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	**get_path(char **env)
-{
-	char	*path;
-	char	**splited_path;
-
-	path = env[2];
-	splited_path = ft_split(path, ':');
-	return (splited_path);
-}
-
-char	*get_command_path(char **path, char *cmd)
-{
-	int		i;
-	char	*path_to_cmd;
-
-	cmd = ft_strjoin("/", cmd);
-	i = 0;
-	while (path[i] != NULL)
-	{
-		path_to_cmd = ft_strjoin(path[i], cmd);
-		if (access(path_to_cmd, F_OK) == 0)
-			return (path_to_cmd);
-		path_to_cmd = free_and_return_empty(path_to_cmd);
-		i++;
-	}
-	return (path_to_cmd);
-}
-
-t_command_prop	parse_cmd(char **path, char *cmd)
-{
-	t_command_prop	cmd_prop;
-	char			**parametrs;
-	char			**splited_cmd;
-	int				j;
-	int				i;
-
-	j = 0;
-	splited_cmd = ft_split(cmd, ' ');
-	while (splited_cmd[j] != NULL)
-		j++;
-	parametrs = malloc(j * sizeof(char *));
-	cmd_prop.command_path = get_command_path(path, splited_cmd[0]);
-	i = 0;
-	j = 1;
-	while (splited_cmd[j] != NULL)
-	{
-		parametrs[i] = splited_cmd[j];
-		i++;
-		j++;
-	}
-	parametrs[i] = NULL;
-	cmd_prop.command_paramets = parametrs;
-	return (cmd_prop);
-}
-
 int	main(int argc, char **argv, char **env)
 {
-	int				i;
 	int				j;
 	t_command_prop	cmd1;
+	t_command_prop	cmd2;
 	char			**e;
 	char			**path;
+	pid_t			process_id_1;
+	int				pipe_fd[2];
+	pid_t			process_id_2;
 
-	e = env;
 	j = argc;
 	e = argv;
 	path = get_path(env);
-	cmd1 = parse_cmd(path, "ipconfig -l rkqwrhjkqwerr rqr hq ejrw");
-	ft_printf("%s\n\n", cmd1.command_path);
-	i = 0;
-	while (cmd1.command_paramets[i] != NULL)
+	cmd1 = parse_cmd(path, "ls");
+	cmd2 = parse_cmd(path, "wc -l");
+	if (pipe(pipe_fd) == -1)
 	{
-		ft_printf("%s\n", cmd1.command_paramets[i]);
-		i++;
+		perror("Pipe creathion error");
+		exit(EXIT_FAILURE);
 	}
+	process_id_1 = fork();
+	if (process_id_1 == -1)
+	{
+		perror("Child process 1 creathion failed");
+		exit(EXIT_FAILURE);
+	}
+	else if (process_id_1 == 0)
+	{
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		execve(cmd1.command_path, cmd1.command_paramets, env);
+		perror("Command executhion in child 1 failed");
+		exit(EXIT_FAILURE);
+	}
+	process_id_2 = fork();
+	if (process_id_2 == -1)
+	{
+		perror("Child process 2 creathion failed");
+		exit(EXIT_FAILURE);
+	}
+	else if (process_id_2 == 0)
+	{
+		dup2(pipe_fd[0], STDIN_FILENO);
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		execve(cmd2.command_path, cmd2.command_paramets, env);
+		perror("Command executhion in child 2 failed");
+		exit(EXIT_FAILURE);
+	}
+	waitpid(process_id_1, NULL, 0);
 }
