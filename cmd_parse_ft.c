@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:34:32 by mratke            #+#    #+#             */
-/*   Updated: 2024/11/24 16:41:22 by mratke           ###   ########.fr       */
+/*   Updated: 2024/11/26 20:14:36 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,18 @@ t_command_prop	parse_cmd(char **path, char *cmd)
 	parametrs[i] = NULL;
 	cmd_prop.command_paramets = parametrs;
 	return (free(splited_cmd), cmd_prop);
+}
+
+t_variabels	fill_variabels(int argc, char **argv, char **env)
+{
+	t_variabels	result;
+
+	result.argc = argc;
+	result.env = env;
+	result.path = get_path(env);
+	result.infile = open(argv[1], O_RDONLY);
+	result.outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	result.cmd1 = parse_cmd(result.path, argv[2]);
+	result.cmd2 = parse_cmd(result.path, argv[3]);
+	return (result);
 }
