@@ -6,21 +6,11 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:34:32 by mratke            #+#    #+#             */
-/*   Updated: 2024/11/26 20:14:36 by mratke           ###   ########.fr       */
+/*   Updated: 2024/11/27 19:09:20 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-char	**get_path(char **env)
-{
-	char	*path;
-	char	**splited_path;
-
-	path = env[2];
-	splited_path = ft_split(path, ':');
-	return (splited_path);
-}
 
 static char	*get_command_path(char **path, char *cmd)
 {

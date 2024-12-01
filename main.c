@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:08:08 by mratke            #+#    #+#             */
-/*   Updated: 2024/11/26 20:17:52 by mratke           ###   ########.fr       */
+/*   Updated: 2024/12/01 16:48:42 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	execute_first(int *pipe_fd, t_variabels v)
 {
 	dup2(pipe_fd[1], STDOUT_FILENO);
 	dup2(v.infile, STDIN_FILENO);
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
 	execve(v.cmd1.command_path, v.cmd1.command_paramets, v.env);
 	perror("Command executhion in child 1 failed");
 	exit(EXIT_FAILURE);
@@ -26,6 +28,7 @@ void	execute_last(int *pipe_fd, t_variabels v)
 	dup2(pipe_fd[0], STDIN_FILENO);
 	dup2(v.outfile, STDOUT_FILENO);
 	close(pipe_fd[1]);
+	close(pipe_fd[0]);
 	close(v.outfile);
 	execve(v.cmd2.command_path, v.cmd2.command_paramets, v.env);
 	perror("Command executhion in child 2 failed");
@@ -50,13 +53,17 @@ int	main(int argc, char **argv, char **env)
 {
 	t_variabels	v;
 	int			pipe_fd[2];
+	int			i;
 
+	i = 0;
+	if (argc != 5)
+		return (1);
 	v = fill_variabels(argc, argv, env);
 	if (pipe(pipe_fd) == -1)
 		exit_and_perror("Pipe fd creathion error");
 	v.pid_1 = fork();
 	if (v.pid_1 == -1)
-		exit_and_perror("Cild process 1 fork failed");
+		exit_and_perror("Child process 1 fork failed");
 	else if (v.pid_1 == 0)
 		execute_first(pipe_fd, v);
 	v.pid_2 = fork();
@@ -65,6 +72,5 @@ int	main(int argc, char **argv, char **env)
 	else if (v.pid_2 == 0)
 		execute_last(pipe_fd, v);
 	close_fds(pipe_fd, v.infile, v.outfile);
-	waitpid(v.pid_2, NULL, 0);
 	return (0);
 }

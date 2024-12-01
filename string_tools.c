@@ -6,13 +6,13 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:01:53 by mratke            #+#    #+#             */
-/*   Updated: 2024/11/22 22:07:19 by mratke           ###   ########.fr       */
+/*   Updated: 2024/11/27 18:28:04 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	ft_strlen(const char *str)
+int	ft_strlen(const char *str)
 {
 	int	i;
 

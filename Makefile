@@ -7,7 +7,8 @@ FT_PRINTF = $(FT_PRINTF_DIR)/ft_printf.a
 SRC = main.c \
 	ft_split.c \
 	string_tools.c \
-	cmd_parse_ft.c
+	cmd_parse_ft.c \
+	ft.c
 
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

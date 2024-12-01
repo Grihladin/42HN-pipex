@@ -6,21 +6,26 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:03:23 by mratke            #+#    #+#             */
-/*   Updated: 2024/11/26 20:01:41 by mratke           ###   ########.fr       */
+/*   Updated: 2024/12/01 16:28:08 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <errno.h>     // errno (used with strerror and perror)
-#include <fcntl.h>     // open (flags like O_RDONLY, O_WRONLY, etc.)
-#include <stdio.h>     // perror
-#include <stdlib.h>    // malloc, free, exit
-#include <string.h>    // strerror
-#include <sys/types.h> // waitpid (POSIX types like pid_t)
-#include <sys/wait.h>  // wait, waitpid
+#ifndef PIPEX_H
+# define PIPEX_H
+
+# include <errno.h>     // errno (used with strerror and perror)
+# include <fcntl.h>     // open (flags like O_RDONLY, O_WRONLY, etc.)
+# include <stdio.h>     // perror
+# include <stdlib.h>    // malloc, free, exit
+# include <string.h>    // strerror
+# include <sys/types.h> // waitpid (POSIX types like pid_t)
+# include <sys/wait.h>  // wait, waitpid
 // open, close, read, write, access, dup, dup2, execve,
 // fork, pipe, unlink, wait, waitpid
-#include "ft_printf/ft_printf.h"
-#include <unistd.h>
+# include "ft_printf/ft_printf.h"
+# include <unistd.h>
+
+# define DEFAULT_PATH "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 typedef struct s_command_prop
 {
@@ -33,7 +38,6 @@ typedef struct s_variables
 	int				argc;
 	int				infile;
 	int				outfile;
-	int				pipe_fd[2];
 	char			**path;
 	char			**env;
 	t_command_prop	cmd1;
@@ -48,3 +52,6 @@ char				*free_and_return_empty(char *s);
 t_command_prop		parse_cmd(char **path, char *cmd);
 char				**get_path(char **env);
 t_variabels			fill_variabels(int argc, char **argv, char **env);
+int					ft_strlen(const char *str);
+
+#endif
