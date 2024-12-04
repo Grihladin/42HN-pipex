@@ -36,7 +36,6 @@ clean:
 fclean: clean
 	@rm -f $(NAME)
 	@$(MAKE) -C $(FT_PRINTF_DIR) fclean
-	@rm -rf $(OBJ_DIR)
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:08:08 by mratke            #+#    #+#             */
-/*   Updated: 2024/12/01 16:48:42 by mratke           ###   ########.fr       */
+/*   Updated: 2024/12/04 20:31:31 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	execute_first(int *pipe_fd, t_variabels v)
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	execve(v.cmd1.command_path, v.cmd1.command_paramets, v.env);
-	perror("Command executhion in child 1 failed");
+	perror("Command executhion in child 1 failed, commnad does not exist");
 	exit(EXIT_FAILURE);
 }
 
@@ -31,7 +31,7 @@ void	execute_last(int *pipe_fd, t_variabels v)
 	close(pipe_fd[0]);
 	close(v.outfile);
 	execve(v.cmd2.command_path, v.cmd2.command_paramets, v.env);
-	perror("Command executhion in child 2 failed");
+	perror("Command executhion in child 2 failed, commnad does not exist");
 	exit(EXIT_FAILURE);
 }
 
@@ -72,5 +72,7 @@ int	main(int argc, char **argv, char **env)
 	else if (v.pid_2 == 0)
 		execute_last(pipe_fd, v);
 	close_fds(pipe_fd, v.infile, v.outfile);
+	waitpid(v.pid_1, NULL, 0);
+	waitpid(v.pid_2, NULL, 0);
 	return (0);
 }
