@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:34:32 by mratke            #+#    #+#             */
-/*   Updated: 2024/12/06 19:47:44 by mratke           ###   ########.fr       */
+/*   Updated: 2024/12/06 20:00:30 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,21 @@ static char	*get_command_path(char **path, char *cmd)
 	while (path[i] != NULL)
 	{
 		path_to_cmd = ft_strjoin(path[i], command);
+		if (path_to_cmd == NULL)
+		{
+			free(command);
+			return (NULL);
+		}
 		if (access(path_to_cmd, F_OK) == 0)
+		{
+			free(command);
 			return (path_to_cmd);
-		path_to_cmd = free_and_return_empty(path_to_cmd);
+		}
+		free(path_to_cmd);
 		i++;
 	}
 	free(command);
-	return (path_to_cmd);
+	return (NULL);
 }
 
 t_command_prop	parse_cmd(char **path, char *cmd)
