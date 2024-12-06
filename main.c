@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:08:08 by mratke            #+#    #+#             */
-/*   Updated: 2024/12/06 20:10:47 by mratke           ###   ########.fr       */
+/*   Updated: 2024/12/06 22:37:18 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	execute_first(int *pipe_fd, t_variabels v)
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	execve(v.cmd1.command_path, v.cmd1.command_paramets, v.env);
-	perror("Command executhion in child 1 failed, %s does not exist");
+	perror("Command executhion in child 1 failed, command does not exist");
 	free_all(v);
 	exit(EXIT_FAILURE);
 }
@@ -32,7 +32,7 @@ void	execute_last(int *pipe_fd, t_variabels v)
 	close(pipe_fd[0]);
 	close(v.outfile);
 	execve(v.cmd2.command_path, v.cmd2.command_paramets, v.env);
-	perror("Command executhion in child 2 failed, %s does not exist");
+	perror("Command executhion in child 2 failed, command does not exist");
 	free_all(v);
 	exit(EXIT_FAILURE);
 }
