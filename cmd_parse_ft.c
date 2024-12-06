@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:34:32 by mratke            #+#    #+#             */
-/*   Updated: 2024/11/27 19:09:20 by mratke           ###   ########.fr       */
+/*   Updated: 2024/12/06 19:47:44 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,19 @@ static char	*get_command_path(char **path, char *cmd)
 {
 	int		i;
 	char	*path_to_cmd;
+	char	*command;
 
-	cmd = ft_strjoin("/", cmd);
+	command = ft_strjoin("/", cmd);
 	i = 0;
 	while (path[i] != NULL)
 	{
-		path_to_cmd = ft_strjoin(path[i], cmd);
+		path_to_cmd = ft_strjoin(path[i], command);
 		if (access(path_to_cmd, F_OK) == 0)
 			return (path_to_cmd);
 		path_to_cmd = free_and_return_empty(path_to_cmd);
 		i++;
 	}
+	free(command);
 	return (path_to_cmd);
 }
 
@@ -45,16 +47,15 @@ t_command_prop	parse_cmd(char **path, char *cmd)
 	parametrs = malloc((j + 1) * sizeof(char *));
 	cmd_prop.command_path = get_command_path(path, splited_cmd[0]);
 	i = 0;
-	j = 0;
-	while (splited_cmd[j] != NULL)
+	while (splited_cmd[i] != NULL)
 	{
-		parametrs[i] = splited_cmd[j];
+		parametrs[i] = ft_strdup(splited_cmd[i]);
 		i++;
-		j++;
 	}
 	parametrs[i] = NULL;
 	cmd_prop.command_paramets = parametrs;
-	return (free(splited_cmd), cmd_prop);
+	free_double_ptr(splited_cmd);
+	return (cmd_prop);
 }
 
 t_variabels	fill_variabels(int argc, char **argv, char **env)

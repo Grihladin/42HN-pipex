@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:08:08 by mratke            #+#    #+#             */
-/*   Updated: 2024/12/04 20:31:31 by mratke           ###   ########.fr       */
+/*   Updated: 2024/12/06 19:31:07 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	execute_first(int *pipe_fd, t_variabels v)
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	execve(v.cmd1.command_path, v.cmd1.command_paramets, v.env);
-	perror("Command executhion in child 1 failed, commnad does not exist");
+	perror("Command executhion in child 1 failed, %s does not exist");
+	free_all(v);
 	exit(EXIT_FAILURE);
 }
 
@@ -31,13 +32,14 @@ void	execute_last(int *pipe_fd, t_variabels v)
 	close(pipe_fd[0]);
 	close(v.outfile);
 	execve(v.cmd2.command_path, v.cmd2.command_paramets, v.env);
-	perror("Command executhion in child 2 failed, commnad does not exist");
+	perror("Command executhion in child 2 failed, %s does not exist");
+	free_all(v);
 	exit(EXIT_FAILURE);
 }
 
 void	exit_and_perror(char *messege)
 {
-	ft_printf("%s", messege);
+	perror(messege);
 	exit(EXIT_FAILURE);
 }
 
@@ -53,14 +55,12 @@ int	main(int argc, char **argv, char **env)
 {
 	t_variabels	v;
 	int			pipe_fd[2];
-	int			i;
 
-	i = 0;
 	if (argc != 5)
 		return (1);
-	v = fill_variabels(argc, argv, env);
 	if (pipe(pipe_fd) == -1)
 		exit_and_perror("Pipe fd creathion error");
+	v = fill_variabels(argc, argv, env);
 	v.pid_1 = fork();
 	if (v.pid_1 == -1)
 		exit_and_perror("Child process 1 fork failed");
@@ -74,5 +74,6 @@ int	main(int argc, char **argv, char **env)
 	close_fds(pipe_fd, v.infile, v.outfile);
 	waitpid(v.pid_1, NULL, 0);
 	waitpid(v.pid_2, NULL, 0);
+	free_all(v);
 	return (0);
 }

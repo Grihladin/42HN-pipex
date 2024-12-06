@@ -6,7 +6,7 @@
 /*   By: mratke <mratke@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:03:23 by mratke            #+#    #+#             */
-/*   Updated: 2024/12/01 16:28:08 by mratke           ###   ########.fr       */
+/*   Updated: 2024/12/06 19:37:53 by mratke           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,7 @@ t_command_prop		parse_cmd(char **path, char *cmd);
 char				**get_path(char **env);
 t_variabels			fill_variabels(int argc, char **argv, char **env);
 int					ft_strlen(const char *str);
-
+void				free_double_ptr(char **arr);
+void				free_all(t_variabels v);
+char				*ft_strdup(const char *src);
 #endif

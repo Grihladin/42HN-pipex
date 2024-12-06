@@ -1,7 +1,7 @@
 # Variables
 CC = cc
 NAME = pipex
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 FT_PRINTF_DIR = ft_printf
 FT_PRINTF = $(FT_PRINTF_DIR)/ft_printf.a
 SRC = main.c \
