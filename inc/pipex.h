@@ -22,7 +22,8 @@
 # include <sys/wait.h>  // wait, waitpid
 // open, close, read, write, access, dup, dup2, execve,
 // fork, pipe, unlink, wait, waitpid
-# include "ft_printf/ft_printf.h"
+# include "../libft/inc/libft.h"
+# include "../ft_printf/inc/ft_printf.h"
 # include <unistd.h>
 
 # define DEFAULT_PATH "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -46,14 +47,9 @@ typedef struct s_variables
 	pid_t			pid_2;
 }					t_variabels;
 
-char				**ft_split(char const *s, char c);
-char				*ft_strjoin(char const *s1, char const *s2);
-char				*free_and_return_empty(char *s);
 t_command_prop		parse_cmd(char **path, char *cmd);
 char				**get_path(char **env);
 t_variabels			fill_variabels(int argc, char **argv, char **env);
-int					ft_strlen(const char *str);
 void				free_double_ptr(char **arr);
 void				free_all(t_variabels v);
-char				*ft_strdup(const char *src);
 #endif

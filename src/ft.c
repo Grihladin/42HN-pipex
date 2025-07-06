@@ -10,27 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-
-static int	ft_strncmp(const char *lhs, const char *rhs, size_t count)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < count && lhs[i] == rhs[i])
-	{
-		if (lhs[i] == '\0')
-		{
-			return (0);
-		}
-		i++;
-	}
-	if (i == count)
-	{
-		return (0);
-	}
-	return ((unsigned char)lhs[i] - (unsigned char)rhs[i]);
-}
+#include "../inc/pipex.h"
 
 char	**get_path(char **env)
 {
@@ -76,24 +56,4 @@ void	free_all(t_variabels v)
 	free(v.cmd2.command_path);
 	free_double_ptr(v.cmd2.command_paramets);
 	free_double_ptr(v.path);
-}
-
-char	*ft_strdup(const char *src)
-{
-	int		src_len;
-	char	*dup;
-	int		i;
-
-	src_len = ft_strlen(src);
-	dup = malloc((src_len + 1) * sizeof(char));
-	if (dup == NULL)
-		return (NULL);
-	i = 0;
-	while (i < src_len)
-	{
-		dup[i] = src[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
 }
