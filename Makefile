@@ -27,8 +27,8 @@ OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 SRC_FILES = $(addprefix $(SRC_DIR)/, $(SRC))
 
 # Rules
-all: $(NAME)
-	@echo "\033[0;32m$(NAME) built successfully!\033[0m"
+all: submodules $(NAME)
+	@echo "\033[0;32m🎉 $(NAME) built successfully!\033[0m"
 
 $(NAME): $(OBJ) $(LIBFT) $(FT_PRINTF)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) $(FT_PRINTF)
@@ -58,7 +58,10 @@ fclean: clean
 re: fclean all
 
 submodules:
-	@git submodule init
-	@git submodule update
+	@if [ ! -f "$(LIBFT_DIR)/.git" ] || [ ! -f "$(FT_PRINTF_DIR)/.git" ]; then \
+		echo "\033[0;33mInitializing and updating submodules...\033[0m"; \
+		git submodule init; \
+		git submodule update; \
+	fi
 
 .PHONY: all clean fclean re submodules
