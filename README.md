@@ -50,6 +50,12 @@ make
 - `cmd2`: Second command to execute (with arguments in quotes if needed)
 - `outfile`: Output file to write the final result
 
+**Example:**
+
+```bash
+./pipex infile "grep hello" "wc -l" outfile
+```
+
 ## 📁 Project Structure
 
 ```
